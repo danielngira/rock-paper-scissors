@@ -90,7 +90,7 @@ function restartGame(round, gameOver, winner) {
 function playgame() {
     let round = 1;
     let gameOver = false;
-    let winner = nul;
+    let winner = null;
 
     while (round <= maxRounds && !gameOver){
        try{
