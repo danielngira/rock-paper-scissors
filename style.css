@@ -1,10 +1,11 @@
 body {
-    font-family: Arial, Helvetica, sans-serif
+    font-family: Helvetica, Arial, san-serif;
 }
 .container1,
 .container2,
 .container3,
-.container4 {
+.container4,
+.container5 {
     display: flex;
     justify-content: center;
     align-items: baseline;
@@ -17,7 +18,9 @@ body {
     font-size: 24px;
 }
 
-.container2 {
+.container2,
+.playerScore,
+.computerScore {
     font-size: 20px;
 }
 
@@ -26,9 +29,21 @@ body {
     gap: 30px;
 }
 
+.container5 {
+    gap: 195px;
+}
+
 button {
     border-radius: 4px;
     border-color: antiquewhite;
     padding: 40px;
     background-color: antiquewhite;
+}
+
+.playerScore {
+    margin-right: 60px;
+    margin-left: 40px;
+}
+.computerScore {
+    margin-right: 50px;
 }

@@ -1,9 +1,26 @@
-console.log("hello world!");
+// Opening instructions
+console.log("Welcome to a game of rock, paper scissors!, click any tile to continue");
 
+// Score variables
 let playerScore = 0;
-let playerChoice;
 let computerScore = 0;
+
+// Game info
+let round = 1;
 const maxRounds = 5;
+let playerChoice;
+let winner = null;
+let gameOver = false;
+
+// Dynamic content to display on the screen
+const playerScoreDiv = document.querySelector("#playerId");
+const computerScoreDiv = document.querySelector("#computerId");
+const computerMoveDiv = document.querySelector("#computerMoveId");
+const gameInfoDiv = document.querySelector("#gameInfo");
+const roundDiv = document.querySelector("#roundId");
+const winnerText = document.createElement("p");
+gameInfoDiv.appendChild(winnerText);
+
 
 function getRandomIntInclusive(min, max) {
   const minCeiled = Math.ceil(min);
@@ -13,25 +30,25 @@ function getRandomIntInclusive(min, max) {
 
 function getComputerChoice() {
     let choices = ["rock", "paper", "scissors"];
-    let choice = getRandomIntInclusive(0, 2)
+    let choice = getRandomIntInclusive(0, 2);
     return choices[choice];
 }
 
 function playRound(humanChoice, computerChoice) {
     let lowerHumanChoice = humanChoice.toLowerCase();
     let lowerComputerChoice = computerChoice.toLowerCase();
-    
-    console.log(`Computer choice: ${lowerComputerChoice}`);
+
+    console.log(`Playing round: ${round}`);
 
     switch (lowerHumanChoice) {
         case "rock":
-            if (lowerComputerChoice == "paper"){
+            if (lowerComputerChoice === "paper"){
                 computerScore++;
             }
-            else if (lowerComputerChoice == "scissors") {
+            else if (lowerComputerChoice === "scissors") {
                 playerScore++;
             }
-            else if (lowerComputerChoice == "rock") {
+            else if (lowerComputerChoice === "rock") {
                 console.log("You have tied, play again");
             }
             else {
@@ -39,13 +56,13 @@ function playRound(humanChoice, computerChoice) {
             }
             break;
         case "paper":
-            if (lowerComputerChoice == "paper"){
+            if (lowerComputerChoice === "paper"){
                 console.log("You have tied, play again");
             }
-            else if (lowerComputerChoice == "scissors") {
+            else if (lowerComputerChoice === "scissors") {
                 computerScore++;
             }
-            else if (lowerComputerChoice == "rock") {
+            else if (lowerComputerChoice === "rock") {
                 playerScore++;
             }
             else {
@@ -53,13 +70,13 @@ function playRound(humanChoice, computerChoice) {
             }
             break;
         case "scissors":
-            if (lowerComputerChoice == "paper"){
+            if (lowerComputerChoice === "paper"){
                 playerScore++;
             }
-            else if (lowerComputerChoice == "scissors") {
+            else if (lowerComputerChoice === "scissors") {
                 console.log("You have tied, play again");
             }
-            else if (lowerComputerChoice == "rock") {
+            else if (lowerComputerChoice === "rock") {
                 computerScore++;
             }
             else {
@@ -69,7 +86,7 @@ function playRound(humanChoice, computerChoice) {
         default:
             throw new Error("Incorrect Player input: Input should be either, rock, paper or scissors");
     }
-        console.log(`Scores => Player: ${playerScore}, Computer: ${computerScore}`);    
+        console.log(`Player Score: ${playerScore}\nComputer Score: ${computerScore}`);    
 }
 
 const buttons = document.querySelectorAll("button");
@@ -88,67 +105,75 @@ buttons.forEach((button) => {
             default:
                 console.log("Unknown input");
         }
-        let comp = getComputerChoice();
         button.style.backgroundColor = "pink";
+        let comp = getComputerChoice();
         console.log(`Player has played: ${playerChoice}\nComputer has played: ${comp}`);
-        playRound(playerChoice, comp);
+        playGame(playerChoice, comp);
     });
     button.addEventListener("mouseleave", () =>{
-        button.style.backgroundColor = "antiquewhite";
+        button.style.backgroundColor = "antiquewhite";33
     });
 });
 
-/*
 function restartGame(round, gameOver, winner) {
     let restart = prompt("Do you want to restart the game? (yes or no)");
     let response = restart.toLowerCase();
     if (response === "yes") {
+        playerChoice = "";
         playerScore = 0;
         computerScore = 0;
-        playgame()
+        round = 1;
+        gameOver = false;
+        winner = null;
+        roundDiv.textContent = `Round: ${round}`;
+        computerScore.textContent = `Computer: ${computerScore}`;
+        playerScore.textContent = `Player: ${playerScore}`;
+        winnerText.textContent = "";
     }
 }
 
-function playgame() {
-    let round = 1;
-    let gameOver = false;
-    let winner = null;
+function playGame(humanMove, computerMove) {
+    if (!winner){
+        if (round <= maxRounds && !gameOver){
 
-    
-    while (round <= maxRounds && !gameOver){
-       try{
-            let humanMove = getHumanChoice();
-            let computerMove = getComputerChoice();
-            playRound(humanMove, computerMove);
+            // Play a round
+            playRound(humanMove, computerMove); 
+
+            // Update the scores and Computer move on the screen
+            computerMoveDiv.textContent = `Computer move: ${computerMove}`;
+            playerScoreDiv.textContent = `Player: ${playerScore}`;
+            computerScoreDiv.textContent = `Computer: ${computerScore}`;
+        
+            
+            if (playerScore >= 3) {
+                winner = "player";
+                gameOver = true;
+            }
+            else if (computerScore >= 3){
+                winner = "computer";
+                gameOver = true;
+            }
+            else if (round === maxRounds && playerScore > computerScore) {
+                winner = "player";
+                gameOver = true;
+            }
+            else if (round === maxRounds && computerScore > playerScore) {
+                winner = "computer";
+                gameOver = true;
+            }
+            else if (round === maxRounds && computerScore == playerScore ) {
+                console.log("The game has ended in a tie");
+                gameOver = true;
+            }
+
+            //Update the round
             round++;
-        }
-        catch(e) {  
-            console.error(e);
-        }
-        if (playerScore >= 3) {
-            winner = "player";
-            gameOver = true;
-        }
-        else if (computerScore >= 3){
-            winner = "computer";
-            gameOver = true;
-        }
-        else if (round > maxRounds && (computerScore == playerScore || computerScore < 3 && playerScore < 3)) {
-            console.log("The game has ended in a tie");
-            gameOver = true;
+            roundDiv.textContent = `Round: ${round}`;
+            console.log(`Proceeding to round: ${round}`);
         }
     }
-
-    if (winner) {
-        console.log(`The winner is: ${winner}`);
-    } else {
-        console.log("The game is a tie!");
+    else {
+        winnerText.textContent = `The ${winner} has won`;
+        restartGame(round, gameOver, winner);
     }
-
-    restartGame();
 }
-
-playgame();
-*/
-
-
