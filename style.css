@@ -3,7 +3,8 @@ body {
 }
 .container1,
 .container2,
-.container3 {
+.container3,
+.container4 {
     display: flex;
     justify-content: center;
     align-items: baseline;
@@ -18,4 +19,16 @@ body {
 
 .container2 {
     font-size: 20px;
+}
+
+.container4 {
+    align-items: center;
+    gap: 30px;
+}
+
+button {
+    border-radius: 4px;
+    border-color: antiquewhite;
+    padding: 40px;
+    background-color: antiquewhite;
 }

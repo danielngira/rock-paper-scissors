@@ -1,6 +1,7 @@
 console.log("hello world!");
 
 let playerScore = 0;
+let playerChoice;
 let computerScore = 0;
 const maxRounds = 5;
 
@@ -14,12 +15,6 @@ function getComputerChoice() {
     let choices = ["rock", "paper", "scissors"];
     let choice = getRandomIntInclusive(0, 2)
     return choices[choice];
-}
-
-function getHumanChoice() {
-    let choice = prompt("Move:");
-    console.log(`Player choice: ${choice}`);
-    return choice;
 }
 
 function playRound(humanChoice, computerChoice) {
@@ -77,6 +72,33 @@ function playRound(humanChoice, computerChoice) {
         console.log(`Scores => Player: ${playerScore}, Computer: ${computerScore}`);    
 }
 
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        switch (button.id) {
+            case "one":
+                playerChoice = "rock";
+                break;
+            case "two":
+                playerChoice = "paper";
+                break;
+            case "three":
+                playerChoice = "scissors";
+                break;
+            default:
+                console.log("Unknown input");
+        }
+        let comp = getComputerChoice();
+        button.style.backgroundColor = "pink";
+        console.log(`Player has played: ${playerChoice}\nComputer has played: ${comp}`);
+        playRound(playerChoice, comp);
+    });
+    button.addEventListener("mouseleave", () =>{
+        button.style.backgroundColor = "antiquewhite";
+    });
+});
+
+/*
 function restartGame(round, gameOver, winner) {
     let restart = prompt("Do you want to restart the game? (yes or no)");
     let response = restart.toLowerCase();
@@ -92,6 +114,7 @@ function playgame() {
     let gameOver = false;
     let winner = null;
 
+    
     while (round <= maxRounds && !gameOver){
        try{
             let humanMove = getHumanChoice();
@@ -126,3 +149,6 @@ function playgame() {
 }
 
 playgame();
+*/
+
+
